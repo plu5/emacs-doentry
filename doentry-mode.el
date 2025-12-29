@@ -103,13 +103,19 @@
         (kill-new text))))
 
 (defun doentry-mode-yank (arg)
-  "with prefix argument also indents lines by that number of spaces"
+  "Yank with special characters escape <>&
+with prefix argument other than 16, also indents lines by
+that number of spaces.
+With prefix argument 16 (C-u C-u) removes empty lines."
   (interactive "P")
   ;; récupère le dernier élément du kill-ring
   (let* ((text (current-kill 0 t)))
     (setq text (doentry-mode-escape-characters-in-text text))
-    (if (not (null arg))
-        (setq text (replace-regexp-in-string "^" (make-string (prefix-numeric-value arg) ?\s) text)))
+    (when (not (null arg))
+      (if (/= 16 (prefix-numeric-value arg))
+          (setq text (replace-regexp-in-string
+                      "^" (make-string (prefix-numeric-value arg) ?\s) text))
+        (setq text (replace-regexp-in-string "^[[:space:]]*\n" "" text))))
     (insert text)))
 
 (defun doentry-key-before-point ()

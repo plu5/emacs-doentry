@@ -19,7 +19,7 @@ doentry files are xml files with markdown text inside of `<key>Entry Text</key><
 ### Features
 - Fontification for xml tags, timestamps in square brackets (like [01:00]), quotes, paragraphs that start with `% ` (even though this is not a real markdown tag), code blocks (text indented by 4 spaces)
 - Automatically escapes &<> on yank, and unescapes on kill
-- yank can be given prefix argument to indent by that number of spaces, useful for <kbd>C-u C-y</kbd> to paste a code that will be formatted as a codeblock
+- yank can be given prefix argument to indent by that number of spaces, useful for <kbd>C-u C-y</kbd> to paste a code that will be formatted as a codeblock. With prefix argument 16 (<kbd>C-u C-u C-y</kbd>) will delete empty lines, useful when pasting a quote instead of having to do `flush-lines` after.
 - navigation to start and end of buffer will go at first to the start/end of the entry, then on second activation will go to the actual start/end of the file
 - Ability to easily add an update to the end of the entry with <kbd>C-c C-c</kbd>
 - org-mode meta-return to be able to do easily add items to markdown lists with <kbd>M-RET</kbd>
@@ -27,7 +27,7 @@ doentry files are xml files with markdown text inside of `<key>Entry Text</key><
 - <kbd>M-w</kbd> :: `doentry-mode-copy`. copies with unescaped &amp;&lt;&gt; (converts to the proper characters &<>)
 - <kbd>C-k</kbd> :: `doentry-mode-kill-to-end-of-line`. kills with unescaped &amp;&lt;&gt; (converts to the proper characters &<>)
 - <kbd>C-w</kbd> :: `doentry-mode-kill-region`. kills with unescaped &amp;&lt;&gt; (converts to the proper characters &<>) unescapes &amp; &lt; &gt;
-- <kbd>C-y</kbd> :: `doentry-mode-yank`. yanks with escaped illegal characters &<> (converts to &amp;&lt;&gt;). with prefix argument also indents the text yanked by that many spaces (useful for inserting a code block with <kbd>C-u C-y</kbd>)
+- <kbd>C-y</kbd> :: `doentry-mode-yank`. yanks with escaped illegal characters &<> (converts to &amp;&lt;&gt;). with prefix argument also indents the text yanked by that many spaces (useful for inserting a code block with <kbd>C-u C-y</kbd>). with prefix argument 16 removes empty lines (useful for inserting a quote flush with <kbd>C-u C-u C-y</kbd>)
 - <kbd>M-></kbd> :: `doentry-mode-end-of-buffer`. like `end-of-buffer` but on first invocation stops at the end of the entry
 - <kbd>M-<</kbd> :: `doentry-mode-beginning-of-buffer`. like `beginning-of-buffer` but on first invocation stops at the beginning of the entry
 - <kbd>C-c C-c</kbd> :: `doentry-mode-add-to-log`
