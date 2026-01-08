@@ -29,6 +29,9 @@
 (defvar doentry-mode-separator
   "-----")
 
+(defvar doentry-mode-subheading
+  "## ")
+
 ;; & doit être en premier parce que sinon &lt; serait transformé en &amp;lt;
 (defvar doentry-mode-escapements
   '(("&" . "&amp;")
@@ -173,16 +176,25 @@ With prefix argument 16 (C-u C-u) removes empty lines."
         (beginning-of-buffer)))))
 
 (defun doentry-mode-add-to-log (arg)
-  "with C-u also inserts separator. with C-u C-u does not insert timestamp. doesn't insert anything if end of entry not found."
+  "Add a new timestamped entry to the log.
+with C-u also inserts a `doentry-mode-subheading' before the entry and
+positions the cursor after it.
+with C-u C-u does not insert timestamp.
+with C-u C-u C-u also inserts a `doentry-mode-separator'.
+Doesn't insert anything if entry xml tag not found."
   (interactive "P")
   (when (doentry-mode-end-of-entry-string)
     (beginning-of-line)
     (open-line 2)
-    (when (= 4 (prefix-numeric-value arg))
+    (when (= 64 (prefix-numeric-value arg))
       (insert doentry-mode-separator)
       (newline 2))
     (when (/= 16 (prefix-numeric-value arg))
-      (insert (format-time-string "[%H:%M] ")))))
+      (insert (format-time-string "[%H:%M] ")))
+    (when (= 4 (prefix-numeric-value arg))
+      (beginning-of-line)
+      (open-line 1)
+      (insert doentry-mode-subheading))))
 
 (defun doentry-mode-meta-return ()
   (interactive)
