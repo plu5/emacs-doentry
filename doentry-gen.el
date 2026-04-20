@@ -146,6 +146,7 @@ file, or `doentry-gen-dir' is nil."
 
 ;;;###autoload
 (defun create-doentry ()
+  "Generate a doentry file"
   (interactive)
   (let ((uuid (doentry-gen-uuid)))
     (find-file (expand-file-name (concat uuid ".doentry") doentry-gen-dir))
