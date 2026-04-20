@@ -3,7 +3,7 @@
 ;; 2025-01-05 09:59:34
 ;; Author: plu5
 ;; Keywords: languages
-;; URL: https://github.com/plu5/emacs-doentry.el
+;; URL: https://github.com/plu5/emacs-doentry
 
 ;; This file is not part of GNU Emacs.
 
