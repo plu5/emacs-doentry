@@ -88,6 +88,12 @@ The first match group should be the n."
   :type 'regexp
   :group 'doentry-gen)
 
+(defcustom doentry-gen-n-function 'doentry-gen-n-string
+  "Function to use to find the n of the previous doentry
+if {n} is used in `doentry-gen-template'."
+  :type 'function
+  :group 'doentry-gen)
+
 (defun doentry-gen-uuid ()
   (upcase (string-replace "-" "" (org-id-uuid))))
 
@@ -108,24 +114,65 @@ The first match group should be the n."
 PATH must not be nil."
   (car (sort (directory-files path 'full match t) #'file-newer-than-file-p)))
 
+(defun doentry-gen-get-file-contents (path)
+  (with-temp-buffer
+    (insert-file-contents path)
+    (buffer-string)))
+
 (defun doentry-gen-latest-file-contents ()
-  "Do not call this function if `doentry-gen-dir' is nil."
-  (let ((latest-log-path
-         (doentry-gen-latest-file doentry-gen-dir ".*\\.doentry$")))
-    (with-temp-buffer
-      (insert-file-contents latest-log-path)
-      (buffer-string))))
+  "Return string contents of latest doentry in `doentry-gen-dir' or nil."
+  (when doentry-gen-dir
+    (let ((latest-log-path
+           (doentry-gen-latest-file doentry-gen-dir ".*\\.doentry$")))
+      (doentry-gen-get-file-contents latest-log-path))))
+
+(defun doentry-gen-n-in-string (contents)
+  (if (string-match doentry-gen-n-regexp contents)
+      (+ 1 (string-to-number (match-string 1 contents)))
+    1))
 
 (defun doentry-gen-n ()
   "Return next doentry number.
 Returns 1 if the previous number is not found, there is no previous
 file, or `doentry-gen-dir' is nil."
   (if doentry-gen-dir
-      (let ((latest-log-contents (doentry-gen-latest-file-contents)))
-        (if (string-match doentry-gen-n-regexp latest-log-contents)
-            (+ 1 (string-to-number (match-string 1 latest-log-contents)))
-          1))
+      (doentry-gen-n-in-string (doentry-gen-latest-file-contents))
     1))
+
+(defun doentry-gen-n-string ()
+  "Calculates next n based on previous doentry and returns as a string
+with 5 digits, for example 00001.
+This function is the default `doentry-gen-n-function'. You can replace it
+with a any function that takes no argument and returns a string."
+  (format "%05d" (doentry-gen-n)))
+
+(defun doentry-gen-n-metaf-first-doentry ()
+  (when doentry-gen-dir
+    (with-temp-buffer
+      (insert-file-contents
+       (expand-file-name "metaf.json" doentry-gen-dir))
+      (goto-char (point-min))
+      (when (re-search-forward
+             "^\\([A-Z0-9]\\{32\\}.doentry\\)," nil t 1)
+        (expand-file-name (match-string 1) doentry-gen-dir)))))
+
+(defun doentry-gen-n-metaf ()
+  "Calculates next n based on metaf.py csv file metadata output.
+This function is not used by default. `doentry-gen-n-function' can be
+set to it to use it for calculating the n instead of
+`doentry-gen-n-string'. It requires `doentry-gen-dir' to be set and
+for the metadata-listing script metaf.py to be present in
+`exec-path'."
+  (when doentry-gen-dir
+    (with-temp-buffer               ; run without popping buffer
+      (shell-command                ; the output will be in *Messages*
+       (concat "metaf.py -usx csv --sort cr '" doentry-gen-dir "'")
+       t)
+      (message "metaf.py output: %s" (buffer-string)))
+    (let* ((latest-entry (doentry-gen-n-metaf-first-doentry))
+           (next-n (doentry-gen-n-in-string
+                    (doentry-gen-get-file-contents latest-entry))))
+      (format "%05d" next-n))))
 
 (defun doentry-gen-heading ()
   (format-time-string " | %F %a"))
@@ -141,7 +188,7 @@ file, or `doentry-gen-dir' is nil."
       "{date}" (doentry-gen-date)
       (string-replace
        "{uuid}" uuid
-       (string-replace "{n}" (format "%05d" (doentry-gen-n))
+       (string-replace "{n}" (funcall doentry-gen-n-function)
                        doentry-gen-template)))))))
 
 ;;;###autoload
