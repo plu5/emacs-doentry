@@ -273,6 +273,7 @@ Doesn't insert anything if entry xml tag not found."
     (define-key map (kbd "C-c C-p") #'doentry-mode-previous-heading)
     map))
 
+;;;###autoload
 (define-derived-mode doentry-mode text-mode "doentry"
   "A major mode to edit doentry files."
   (font-lock-add-keywords nil doentry-mode-font-lock-keywords)
@@ -282,6 +283,7 @@ Doesn't insert anything if entry xml tag not found."
                 (nil ,doentry-mode-header-regexp 0)))
   :syntax-table doentry-mode-syntax-table)
 
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.doentry\\'" . doentry-mode))
 
 (provide 'doentry-mode)
