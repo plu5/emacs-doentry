@@ -16,12 +16,49 @@
   "doentry major mode."
   :group 'languages)
 
- (defcustom doentry-mode-beg-entry-regexp
+(defcustom doentry-mode-beg-entry-regexp
   "<key>\\(Entry Text\\)</key>[\n\t ]*<string>"
   "Regexp to find the beginning of the Entry Text element
 (element that contains the markdown contents of the entry).
 Used for navigation and imenu."
+  :type 'regexp
+  :group 'doentry-mode)
+
+(defcustom doentry-mode-entry-key
+  "Entry Text"
+  "Entry Text XML key name.
+(element that contains the markdown contents of the entry)."
   :type 'string
+  :group 'doentry-mode)
+
+(defcustom doentry-mode-end-string-tag
+  "</string>"
+  "XML end string tag.
+Used to find end of Entry Text string."
+  :type 'string
+  :group 'doentry-mode)
+
+(defcustom doentry-mode-separator
+  "-----"
+  "Separator to insert in C-u C-u C-u `doentry-mode-add-to-log'."
+  :type 'string
+  :group 'doentry-mode)
+
+(defcustom doentry-mode-subheading
+  "## "
+  "Subheading to insert in C-u `doentry-mode-add-to-log'."
+  :type 'string
+  :group 'doentry-mode)
+
+(defcustom doentry-mode-escapements
+  '(("&" . "&amp;")
+    ("<" . "&lt;")
+    (">" . "&gt;"))
+  "Alist of substitutions for illegal characters in doentry files.
+The substitutions are applied in order. Thus for example & to &amp;
+should be before < to &lt; to avoid &lt; being transformed to
+&amp;lt;."
+  :type '(repeat (cons string string))
   :group 'doentry-mode)
 
 ;; taken from markdown-mode `markdown-regex-header'
@@ -50,27 +87,9 @@ Group 6 matches the closing whitespace and hash marks of an atx heading.")
 
 (defvar doentry-mode-syntax-table
   (let ((st (make-syntax-table)))
-    ;; On dit que " n’est plus un délimiteur de chaîne
+    ;; stop "" being fontified as string
     (modify-syntax-entry ?\" "." st)
     st))
-
-(defvar doentry-mode-end-string-tag
-  "</string>")
-
-(defvar doentry-mode-entry-key
-  "Entry Text")
-
-(defvar doentry-mode-separator
-  "-----")
-
-(defvar doentry-mode-subheading
-  "## ")
-
-;; & doit être en premier parce que sinon &lt; serait transformé en &amp;lt;
-(defvar doentry-mode-escapements
-  '(("&" . "&amp;")
-    ("<" . "&lt;")
-    (">" . "&gt;")))
 
 (defun doentry-mode-escape-characters-in-text (text)
   (let ((res text))
