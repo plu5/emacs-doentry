@@ -224,7 +224,7 @@ Doesn't insert anything if entry xml tag not found."
     (define-key map (kbd "M-<return>") #'doentry-mode-meta-return)
     map))
 
-(define-derived-mode doentry-mode fundamental-mode "doentry"
+(define-derived-mode doentry-mode text-mode "doentry"
   "A major mode to edit doentry files."
   (font-lock-add-keywords nil doentry-mode-font-lock-keywords)
   :syntax-table doentry-mode-syntax-table)
