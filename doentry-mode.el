@@ -223,6 +223,30 @@ Doesn't insert anything if entry xml tag not found."
   (let ((warning-suppress-types '((org-element))))
     (org-meta-return)))
 
+(defun doentry-mode-before-first-heading-p ()
+  (not
+   (save-excursion
+     (beginning-of-line)
+     (re-search-backward doentry-mode-header-regexp nil t))))
+
+(defun doentry-mode-after-last-heading-p ()
+  (not
+   (save-excursion
+     (end-of-line)
+     (re-search-forward doentry-mode-header-regexp nil t))))
+
+(defun doentry-mode-next-heading (arg)
+  (interactive "p")
+  (if (doentry-mode-after-last-heading-p)
+      (doentry-mode-end-of-buffer)
+    (outline-next-visible-heading arg)))
+
+(defun doentry-mode-previous-heading (arg)
+  (interactive "p")
+  (if (doentry-mode-before-first-heading-p)
+      (doentry-mode-beginning-of-buffer)
+    (outline-previous-visible-heading arg)))
+
 (defvar doentry-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "M-w") #'doentry-mode-copy)
@@ -233,8 +257,8 @@ Doesn't insert anything if entry xml tag not found."
     (define-key map (kbd "M-<") #'doentry-mode-beginning-of-buffer)
     (define-key map (kbd "C-c C-c") #'doentry-mode-add-to-log)
     (define-key map (kbd "M-<return>") #'doentry-mode-meta-return)
-    (define-key map (kbd "C-c C-n") #'outline-next-visible-heading)
-    (define-key map (kbd "C-c C-p") #'outline-previous-visible-heading)
+    (define-key map (kbd "C-c C-n") #'doentry-mode-next-heading)
+    (define-key map (kbd "C-c C-p") #'doentry-mode-previous-heading)
     map))
 
 (define-derived-mode doentry-mode text-mode "doentry"

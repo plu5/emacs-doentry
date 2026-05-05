@@ -37,7 +37,7 @@ Notes on the default template, which is made to be compliant with the files gene
 - <kbd>M-<</kbd> :: `doentry-mode-beginning-of-buffer`. like `beginning-of-buffer` but on first invocation stops at the beginning of the entry
 - <kbd>C-c C-c</kbd> :: `doentry-mode-add-to-log`
 - <kbd>M-RET</kbd> :: `doentry-mode-meta-return`. does `org-meta-return`
-- <kbd>C-c C-n</kbd>, <kbd>C-c C-p</kbd> :: navigate between headings
+- <kbd>C-c C-n</kbd>, <kbd>C-c C-p</kbd> :: navigate between headings (`doentry-mode-next-heading`, `doentry-mode-previous-heading`)
 
 ## Installation
 Clone
