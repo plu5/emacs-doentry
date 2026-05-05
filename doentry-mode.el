@@ -1,5 +1,16 @@
-;;; doentry-mode.el -- A major mode to edit doentry files
-;; created 2025-12-01 08:02:48
+;;; doentry-mode.el -- doentry major mode  -*- lexical-binding: t; -*-
+
+;; 2025-12-01 08:02:48
+;; Author: plu5
+;; Keywords: languages
+;; URL: https://github.com/plu5/emacs-doentry
+
+;; This file is not part of GNU Emacs.
+
+;;; Commentary:
+;; Major mode for editing doentry files.
+
+;;; Code:
 
 (defvar doentry-mode-font-lock-keywords
   '(("<.*>" . font-lock-function-name-face)
