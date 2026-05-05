@@ -12,6 +12,18 @@
 
 ;;; Code:
 
+(defgroup doentry-mode nil
+  "doentry major mode."
+  :group 'languages)
+
+ (defcustom doentry-mode-beg-entry-regexp
+  "<key>\\(Entry Text\\)</key>[\n\t ]*<string>"
+  "Regexp to find the beginning of the Entry Text element
+(element that contains the markdown contents of the entry).
+Used for navigation and imenu."
+  :type 'string
+  :group 'doentry-mode)
+
 ;; taken from markdown-mode `markdown-regex-header'
 (defconst doentry-mode-header-regexp
   "^\\(?:\\(?1:[^\r\n\t -].*\\)\n\\(?:\\(?2:=+\\)\\|\\(?3:-+\\)\\)\\|\\(?4:#+[ \t]+\\)\\(?5:.*?\\)\\(?6:[ \t]+#+\\)?\\)$"
@@ -188,7 +200,7 @@ With prefix argument 16 (C-u C-u) removes empty lines."
 (defun doentry-mode-beginning-of-buffer ()
   (interactive)
   (when (not (bobp))
-    (let ((reg "<key>Entry Text</key>[\n\t ]*<string>")
+    (let ((reg doentry-mode-beg-entry-regexp)
           (point1 (point)))
       (if (re-search-backward reg nil t)
           ;; but the following line should always pass so don't know if i need the when or what to do if not
@@ -266,7 +278,8 @@ Doesn't insert anything if entry xml tag not found."
   (font-lock-add-keywords nil doentry-mode-font-lock-keywords)
   (setq-local outline-regexp doentry-mode-header-regexp)
   (setq-local imenu-generic-expression
-              `((nil ,doentry-mode-header-regexp 0)))
+              `((nil ,doentry-mode-beg-entry-regexp 1)
+                (nil ,doentry-mode-header-regexp 0)))
   :syntax-table doentry-mode-syntax-table)
 
 (add-to-list 'auto-mode-alist '("\\.doentry\\'" . doentry-mode))
