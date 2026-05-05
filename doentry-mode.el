@@ -12,6 +12,17 @@
 
 ;;; Code:
 
+;; taken from markdown-mode `markdown-regex-header'
+(defconst doentry-mode-header-regexp
+  "^\\(?:\\(?1:[^\r\n\t -].*\\)\n\\(?:\\(?2:=+\\)\\|\\(?3:-+\\)\\)\\|\\(?4:#+[ \t]+\\)\\(?5:.*?\\)\\(?6:[ \t]+#+\\)?\\)$"
+  "Regexp identifying Markdown headings.
+Group 1 matches the text of a setext heading.
+Group 2 matches the underline of a level-1 setext heading.
+Group 3 matches the underline of a level-2 setext heading.
+Group 4 matches the opening hash marks of an atx heading and whitespace.
+Group 5 matches the text, without surrounding whitespace, of an atx heading.
+Group 6 matches the closing whitespace and hash marks of an atx heading.")
+
 (defvar doentry-mode-font-lock-keywords
   '(("<.*>" . font-lock-function-name-face)
     ;; [nn:nn] timestamps
@@ -222,11 +233,14 @@ Doesn't insert anything if entry xml tag not found."
     (define-key map (kbd "M-<") #'doentry-mode-beginning-of-buffer)
     (define-key map (kbd "C-c C-c") #'doentry-mode-add-to-log)
     (define-key map (kbd "M-<return>") #'doentry-mode-meta-return)
+    (define-key map (kbd "C-c C-n") #'outline-next-visible-heading)
+    (define-key map (kbd "C-c C-p") #'outline-previous-visible-heading)
     map))
 
 (define-derived-mode doentry-mode text-mode "doentry"
   "A major mode to edit doentry files."
   (font-lock-add-keywords nil doentry-mode-font-lock-keywords)
+  (setq-local outline-regexp doentry-mode-header-regexp)
   :syntax-table doentry-mode-syntax-table)
 
 (add-to-list 'auto-mode-alist '("\\.doentry\\'" . doentry-mode))

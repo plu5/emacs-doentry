@@ -27,6 +27,7 @@ Notes on the default template, which is made to be compliant with the files gene
 - navigation to start and end of buffer will go at first to the start/end of the entry, then on second activation will go to the actual start/end of the file
 - Ability to easily add an update to the end of the entry with <kbd>C-c C-c</kbd>
 - org-mode meta-return to be able to do easily add items to markdown lists with <kbd>M-RET</kbd>
+- Navigation between headings
 ### Keymap
 - <kbd>M-w</kbd> :: `doentry-mode-copy`. copies with unescaped &amp;&lt;&gt; (converts to the proper characters &<>)
 - <kbd>C-k</kbd> :: `doentry-mode-kill-to-end-of-line`. kills with unescaped &amp;&lt;&gt; (converts to the proper characters &<>)
@@ -36,6 +37,7 @@ Notes on the default template, which is made to be compliant with the files gene
 - <kbd>M-<</kbd> :: `doentry-mode-beginning-of-buffer`. like `beginning-of-buffer` but on first invocation stops at the beginning of the entry
 - <kbd>C-c C-c</kbd> :: `doentry-mode-add-to-log`
 - <kbd>M-RET</kbd> :: `doentry-mode-meta-return`. does `org-meta-return`
+- <kbd>C-c C-n</kbd>, <kbd>C-c C-p</kbd> :: navigate between headings
 
 ## Installation
 Clone
