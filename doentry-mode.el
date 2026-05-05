@@ -265,6 +265,8 @@ Doesn't insert anything if entry xml tag not found."
   "A major mode to edit doentry files."
   (font-lock-add-keywords nil doentry-mode-font-lock-keywords)
   (setq-local outline-regexp doentry-mode-header-regexp)
+  (setq-local imenu-generic-expression
+              `((nil ,doentry-mode-header-regexp 0)))
   :syntax-table doentry-mode-syntax-table)
 
 (add-to-list 'auto-mode-alist '("\\.doentry\\'" . doentry-mode))

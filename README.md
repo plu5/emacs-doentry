@@ -28,6 +28,8 @@ Notes on the default template, which is made to be compliant with the files gene
 - Ability to easily add an update to the end of the entry with <kbd>C-c C-c</kbd>
 - org-mode meta-return to be able to do easily add items to markdown lists with <kbd>M-RET</kbd>
 - Navigation between headings
+- imenu with the headings
+
 ### Keymap
 - <kbd>M-w</kbd> :: `doentry-mode-copy`. copies with unescaped &amp;&lt;&gt; (converts to the proper characters &<>)
 - <kbd>C-k</kbd> :: `doentry-mode-kill-to-end-of-line`. kills with unescaped &amp;&lt;&gt; (converts to the proper characters &<>)
