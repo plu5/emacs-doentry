@@ -38,6 +38,13 @@ Used to find end of Entry Text string."
   :type 'string
   :group 'doentry-mode)
 
+(defcustom doentry-mode-entry-time-string
+  "[%H:%M] "
+  "Format of timestamp inserted on `doentry-mode-add-to-log'.
+Set this to an empty string to disable inserting timestamps."
+  :type 'string
+  :group 'doentry-mode)
+
 (defcustom doentry-mode-add16
   "## "
   "Inserted before the entry on C-u C-u `doentry-mode-add-to-log'."
@@ -247,7 +254,7 @@ Doesn't insert anything if entry xml tag not found."
       (insert doentry-mode-add64)
       (newline))
     (unless (= 4 (prefix-numeric-value arg))
-      (insert (format-time-string "[%H:%M] ")))))
+      (insert (format-time-string doentry-mode-entry-time-string)))))
 
 (defun doentry-mode-meta-return ()
   (interactive)
