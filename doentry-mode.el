@@ -38,15 +38,17 @@ Used to find end of Entry Text string."
   :type 'string
   :group 'doentry-mode)
 
-(defcustom doentry-mode-separator
-  "-----"
-  "Separator to insert in C-u C-u C-u `doentry-mode-add-to-log'."
+(defcustom doentry-mode-add16
+  "## "
+  "Inserted before the entry on C-u C-u `doentry-mode-add-to-log'."
   :type 'string
   :group 'doentry-mode)
 
-(defcustom doentry-mode-subheading
-  "## "
-  "Subheading to insert in C-u `doentry-mode-add-to-log'."
+(defcustom doentry-mode-add64
+  "-----
+
+## "
+  "Inserted before the entry on C-u C-u C-u `doentry-mode-add-to-log'."
   :type 'string
   :group 'doentry-mode)
 
@@ -230,24 +232,22 @@ With prefix argument 16 (C-u C-u) removes empty lines."
 
 (defun doentry-mode-add-to-log (arg)
   "Add a new timestamped entry to the log.
-with C-u also inserts a `doentry-mode-subheading' before the entry and
-positions the cursor after it.
-with C-u C-u does not insert timestamp.
-with C-u C-u C-u also inserts a `doentry-mode-separator'.
+with C-u does not insert timestamp.
+with C-u C-u also inserts a `doentry-mode-add16' before the entry.
+with C-u C-u C-u also inserts a `doentry-mode-add64' before the entry.
 Doesn't insert anything if entry xml tag not found."
   (interactive "P")
   (when (doentry-mode-end-of-entry-string)
     (beginning-of-line)
     (open-line 2)
+    (when (= 16 (prefix-numeric-value arg))
+      (insert doentry-mode-add16)
+      (newline))
     (when (= 64 (prefix-numeric-value arg))
-      (insert doentry-mode-separator)
-      (newline 2))
-    (when (/= 16 (prefix-numeric-value arg))
-      (insert (format-time-string "[%H:%M] ")))
-    (when (= 4 (prefix-numeric-value arg))
-      (beginning-of-line)
-      (open-line 1)
-      (insert doentry-mode-subheading))))
+      (insert doentry-mode-add64)
+      (newline))
+    (unless (= 4 (prefix-numeric-value arg))
+      (insert (format-time-string "[%H:%M] ")))))
 
 (defun doentry-mode-meta-return ()
   (interactive)
