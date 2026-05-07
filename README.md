@@ -86,4 +86,10 @@ Useful function you can add to your config to be able to rgrep entries easily:
 (global-set-key (kbd "C-z s") #'rgrep-doentries)
 ```
 
+## Roadmap
+By "roadmap" I mean "maybe".
+- [ ] Tables functionality in `doentry-mode-meta-return` like `org-meta-return`
+- [ ] A function to demote list items and headings like `org-metaleft`
+- [ ] A function to promote list items and headings like `org-metaright`
+
 [^dayone]: In 2015, and I haven't used it since 2018 and not sure if the format is still the same. Last I remember they changed it to force users to store their files on their server and pay them a monthly subscription.
