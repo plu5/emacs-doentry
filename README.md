@@ -37,7 +37,7 @@ Notes on the default template, which is made to be compliant with the files gene
 - <kbd>C-y</kbd> :: `doentry-mode-yank`. yanks with escaped illegal characters &<> (converts to &amp;&lt;&gt;). with prefix argument also indents the text yanked by that many spaces (useful for inserting a code block with <kbd>C-u C-y</kbd>). with prefix argument 16 removes empty lines (useful for inserting a quote flush with <kbd>C-u C-u C-y</kbd>)
 - <kbd>M-></kbd> :: `doentry-mode-end-of-buffer`. like `end-of-buffer` but on first invocation stops at the end of the entry
 - <kbd>M-<</kbd> :: `doentry-mode-beginning-of-buffer`. like `beginning-of-buffer` but on first invocation stops at the beginning of the entry
-- <kbd>C-c C-c</kbd> :: `doentry-mode-add-to-log`
+- <kbd>C-c C-c</kbd> :: `doentry-mode-add-to-entry`. adds a new timestamped update to the entry (customisable in `doentry-mode-entry-time-string`). with <kbd>C-u</kbd> does not add the timestamp. with <kbd>C-u C-u</kbd> adds `doentry-mode-add16` beforehand (heading by default). with <kbd>C-u C-u C-u</kbd> adds `doentry-mode-add64` beforehand (separator and heading by default).
 - <kbd>M-RET</kbd> :: `doentry-mode-meta-return`. does `org-meta-return`
 - <kbd>C-c C-n</kbd>, <kbd>C-c C-p</kbd> :: navigate between headings (`doentry-mode-next-heading`, `doentry-mode-previous-heading`)
 

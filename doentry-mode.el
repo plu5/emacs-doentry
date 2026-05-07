@@ -40,14 +40,14 @@ Used to find end of Entry Text string."
 
 (defcustom doentry-mode-entry-time-string
   "[%H:%M] "
-  "Format of timestamp inserted on `doentry-mode-add-to-log'.
+  "Format of timestamp inserted on `doentry-mode-add-to-entry'.
 Set this to an empty string to disable inserting timestamps."
   :type 'string
   :group 'doentry-mode)
 
 (defcustom doentry-mode-add16
   "## "
-  "Inserted before the entry on C-u C-u `doentry-mode-add-to-log'."
+  "Inserted before the update on C-u C-u `doentry-mode-add-to-entry'."
   :type 'string
   :group 'doentry-mode)
 
@@ -55,7 +55,7 @@ Set this to an empty string to disable inserting timestamps."
   "-----
 
 ## "
-  "Inserted before the entry on C-u C-u C-u `doentry-mode-add-to-log'."
+  "Inserted before the update on C-u C-u C-u `doentry-mode-add-to-entry'."
   :type 'string
   :group 'doentry-mode)
 
@@ -237,8 +237,8 @@ With prefix argument 16 (C-u C-u) removes empty lines."
               (beginning-of-buffer)))
         (beginning-of-buffer)))))
 
-(defun doentry-mode-add-to-log (arg)
-  "Add a new timestamped entry to the log.
+(defun doentry-mode-add-to-entry (arg)
+  "Add a new timestamped update to the entry.
 with C-u does not insert timestamp.
 with C-u C-u also inserts a `doentry-mode-add16' before the entry.
 with C-u C-u C-u also inserts a `doentry-mode-add64' before the entry.
@@ -293,7 +293,7 @@ Doesn't insert anything if entry xml tag not found."
     (define-key map (kbd "C-y") #'doentry-mode-yank)
     (define-key map (kbd "M->") #'doentry-mode-end-of-buffer)
     (define-key map (kbd "M-<") #'doentry-mode-beginning-of-buffer)
-    (define-key map (kbd "C-c C-c") #'doentry-mode-add-to-log)
+    (define-key map (kbd "C-c C-c") #'doentry-mode-add-to-entry)
     (define-key map (kbd "M-<return>") #'doentry-mode-meta-return)
     (define-key map (kbd "C-c C-n") #'doentry-mode-next-heading)
     (define-key map (kbd "C-c C-p") #'doentry-mode-previous-heading)
