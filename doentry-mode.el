@@ -256,10 +256,45 @@ Doesn't insert anything if entry xml tag not found."
     (unless (= 4 (prefix-numeric-value arg))
       (insert (format-time-string doentry-mode-entry-time-string)))))
 
+(defun doentry-mode-list-item-prefix-or-nil ()
+  "Return prefix of list item or heading at point.
+Return nil if not on a list item or heading."
+  (save-excursion
+    (beginning-of-line)
+    (when (looking-at "^[\t ]*[-\\+\\*] \\|^[#]+ \\|^[\t ]*[0-9]+\\. ")
+      (match-string-no-properties 0))))
+
+(defun doentry-mode-renumber-list-after-point (offset)
+  "Add OFFSET to each list item number after point."
+  (save-excursion
+    (forward-line 1)
+    (while (looking-at "^[\t ]*\\([0-9]+\\)\\. ")
+      (let* ((n (string-to-number (match-string 1)))
+             (replacement (number-to-string (+ n offset))))
+        (replace-match replacement t t nil 1))
+      (forward-line 1))))
+
 (defun doentry-mode-meta-return ()
+  "Contextual insert new list item or heading.
+Intended to behave like `org-meta-return'.
+When point is on a list item or heading, create a a new list item or
+heading of the same type and indentation. With numbered lists, support
+is limited; if an item is inserted in the middle, only list items that
+are 1-line long with no empty lines in between will be renumbered."
   (interactive)
-  (let ((warning-suppress-types '((org-element))))
-    (org-meta-return)))
+  (let ((item-prefix (doentry-mode-list-item-prefix-or-nil)))
+    (when item-prefix
+      (let ((split-prefix (split-string item-prefix "\\.")))
+        ;; numbered list
+        (when (string-match-p "^[0-9]+$" (car split-prefix))
+          (setf (car split-prefix)
+                (number-to-string (1+ (string-to-number (car split-prefix)))))
+          (setq item-prefix (mapconcat 'identity split-prefix "."))
+          (doentry-mode-renumber-list-after-point 1)))
+      (while (eq (char-before) ?\s)
+        (delete-char -1))
+      (newline)
+      (insert item-prefix))))
 
 (defun doentry-mode-before-first-heading-p ()
   (not
