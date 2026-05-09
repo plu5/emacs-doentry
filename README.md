@@ -87,7 +87,9 @@ Useful function you can add to your config to be able to rgrep entries easily:
 ```
 
 ## Roadmap
-By "roadmap" I mean "maybe".
+- [ ] Bug: The header regexp we're using can match several lines (in the case of "setext headings" i.e. headings with an underline composed of `-` or `=` characters) which will result in a broken imenu index. Since there are different match groups for the text of atx headings and settext headings, to fix this we either have to change the regexp or switch to defining `imenu-create-index-function` instead of `imenu-generic-expression`.
+
+Maybe:
 - [ ] Tables functionality in `doentry-mode-meta-return` like `org-meta-return`
 - [ ] A function to demote list items and headings like `org-metaleft`
 - [ ] A function to promote list items and headings like `org-metaright`
