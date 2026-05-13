@@ -342,6 +342,7 @@ are 1-line long with no empty lines in between will be renumbered."
   (setq-local imenu-generic-expression
               `((nil ,doentry-mode-beg-entry-regexp 1)
                 (nil ,doentry-mode-header-regexp 0)))
+  (put 'doentry-mode-yank 'delete-selection t)
   :syntax-table doentry-mode-syntax-table)
 
 ;;;###autoload
